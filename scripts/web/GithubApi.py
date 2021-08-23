@@ -122,4 +122,8 @@ class GithubApi:
 		with open(output_dir+"/"+artifact_name+".zip",'wb') as f:
 			f.write(artifact)
 		
+		delete_request=requests.delete(base_url+"/"+str(artifact_id),headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token))
+		if delete_request.status_code!=204:
+			print("Warn: Artifact deletion fail. Artifact remain.")
+
 

@@ -1,7 +1,11 @@
 import sys
 import argparse
 import json
+import zipfile
+import tempfile
+import os
 import GithubApi
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("github_owner",help="https://api.github.com/repos/{github_owner}/{github_repos_name}/")
@@ -12,7 +16,8 @@ def main():
 	args = parser.parse_args()
 
 	try:
-		web_outside_json=read_json(args.web_outside_json)
+		web_outside_json=read_file(args.web_outside_json)
+		web_outside_list=json.loads(web_outside_json)
 	except FileNotFoundError as e:
 		print("ファイル"+args.web_outside_json+"がreadで開けません。設定ファイルを確認してください")
 		print("エラーメッセージ："+str(e))
@@ -27,23 +32,49 @@ def main():
 		sys.exit(-1)
 	
 	# TODO: エラー処理
-	make_valid_web_outside_json(web_outside_json)
+	make_valid_web_outside_json(web_outside_list)
 
 	api=GithubApi.GithubApi(args.github_user,args.github_token,args.github_owner,args.github_repos_name)
-	api.make_github_secrets("web_outside_json",json.dumps(web_outside_json))
+	api.make_github_secrets("web_outside_json",web_outside_json.replace('"','\\"'))
 
 	api.exec_github_actions("exec_web_outside_test")
 	
-	api.download_github_artifacts(api.work_id,times=10,interval=5,output_dir="tmp")
+	test_result=""
+	with tempfile.TemporaryDirectory() as tmp:
+		api.download_github_artifacts(api.work_id,times=10,interval=5,output_dir=tmp)
+		test_result=read_zip(os.path.join(tmp,api.work_id)+".zip","result.txt")
+	error_list=test_result.split()
+	if len(error_list)==0:
+		sys.exit(0)
+	else:
+		for i in error_list:
+			print("test failed: "+web_outside_list[int(i)-1]["description"])
+			print("url: "+web_outside_list[int(i)-1]["url"])
+		sys.exit(1)
 
 
-def read_json(file_name):
+def read_zip(zip_file_name,file_name):
 	"""
-	read_jsonは、引数に指定されたファイルを読み込み、ディクショナリのリストを返す
+	read_zipはzip_file_name内に保存されたfile_nameを読み込み、ファイルの内容を文字列として返します。
+	"""
+	content=""
+	with tempfile.TemporaryDirectory() as tmp:
+		with zipfile.ZipFile(zip_file_name) as existing_zip:
+			existing_zip.extract(file_name,os.path.join(tmp,"result"))
+		with open(os.path.join(tmp,"result/result.txt")) as f:
+			content=f.read()
+	return content
+		
+	
+	pass
+
+def read_file(file_name):
+	"""
+	read_fileは、引数に指定されたファイルを読み込み、文字列として返す
 	"""
 	l=[]
 	with open(file_name) as f:
-		l=json.load(f)
+		l=f.read()
 	return l
 
 def make_valid_web_outside_json(web_outside_list):
