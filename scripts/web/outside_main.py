@@ -29,11 +29,13 @@ def main():
 	# TODO: エラー処理
 	make_valid_web_outside_json(web_outside_json)
 
-	api=GithubApi.GithubApi(args.github_user,args.github_token)
-	api.make_github_secrets(args.github_owner,args.github_repos_name, "web_outside_json",json.dumps(web_outside_json))
+	api=GithubApi.GithubApi(args.github_user,args.github_token,args.github_owner,args.github_repos_name)
+	api.make_github_secrets("web_outside_json",json.dumps(web_outside_json))
 
-	#with open(sys.argv[2]) as f:
-	#	print(encrypt(sys.argv[1], f.read()))
+	api.exec_github_actions("exec_web_outside_test")
+	
+	api.download_github_artifacts(api.work_id,times=10,interval=5,output_dir="tmp")
+
 
 def read_json(file_name):
 	"""
@@ -58,12 +60,6 @@ def make_valid_web_outside_json(web_outside_list):
 			raise ValueError("リストのすべての要素に'url'が必要です。'url'が無い要素があります。テスト対象のURLを記述するか、その要素を削除してください")
 		if "status" not in web_outside:
 			raise ValueError("リストのすべての要素に'status'が必要です。'status'が無い要素があります。'url'にアクセスしたときに想定されるステータスコードを要素に必ず含んでください。")
-
-
-	
-
-		
-		
 
 if __name__ == "__main__":
 	main()

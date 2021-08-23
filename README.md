@@ -2,7 +2,7 @@
 
 ## 環境
 - Debian 10
-- Python3 
+- Python3.6以上
 - Bash
 
 ## インストール方法
@@ -14,7 +14,7 @@ Webテストを行う場合、Forkして、所有者としてアクセス可能�
 
 以下のコマンドのnet-mgrは自身のアカウント名または自身に所有権がある組織になります。
 ```bash
-git clone https://github.com/net-mgr/svr-keeper.git
+git clone https://github.com/net-mgr/svrkeeper.git
 ```
 
 3. pip3をインストールし、Pythonの必要なモジュールをインストール

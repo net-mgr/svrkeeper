@@ -1,6 +1,7 @@
 /config/*
 !/config/README.md
 /results/*
+/tmp/*
 
 
 #python.gitignore: https://github.com/github/gitignore/blob/master/Python.gitignore
