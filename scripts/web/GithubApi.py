@@ -47,15 +47,23 @@ class GithubApi:
 		base_url="https://api.github.com/repos/"+self.repos_owner+"/"+self.repos_name+"/actions/secrets"		
 		headers={'accept': 'application/vnd.github.v3+json'}
 
-		# public keyの取得 TODO: エラー処理
+		# public keyの取得 
 		public_key_request=requests.get(base_url+"/public-key",headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token))
+		if public_key_request.status_code==404:
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのGITHUB_OWNER、GITHUB_REPO_NAMEが間違っていないか確認してください。メッセージ："+public_key_request.text)
+		if public_key_request.status_code==403:
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのGITHUB_USERNAMEやGITHUB_TOKENが間違っていない確認してください。メッセージ："+public_key_request.text)
+		if public_key_request.status_code!=200:
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。status:"+public_key_request.status_code+"、メッセージ："+public_key_request.text)
 		public_key=public_key_request.json()
 		
-		#github secretsの作成　TODO: エラー処理
+		#github secretsの作成
 		data={}
 		data["encrypted_value"]=self.encrypt(public_key['key'], secrets_value)
 		data["key_id"]=public_key["key_id"]
 		secrets_put=requests.put(base_url+"/"+secrets_name, headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token),data=json.dumps(data))
+		if secrets_put.status_code!=201 and secrets_put.status_code!=204:
+			raise ValueError("GitHub APIを用いてSecretsを登録することができません。メッセージ："+secrets_put.text)
 
 	def exec_github_actions(self, workflows_name):
 		"""

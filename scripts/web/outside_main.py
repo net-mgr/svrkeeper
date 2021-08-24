@@ -21,36 +21,51 @@ def main():
 	except FileNotFoundError as e:
 		print("ファイル"+args.web_outside_json+"がreadで開けません。設定ファイルを確認してください")
 		print("エラーメッセージ："+str(e))
-		sys.exit(-1)
+		sys.exit(1)
 	except UnicodeDecodeError as e:
 		print("ファイル"+args.web_outside_json+"はUTF-8ではありません。設定ファイルを確認してください")
 		print("エラーメッセージ："+str(e))
-		sys.exit(-1)
+		sys.exit(1)
 	except json.decoder.JSONDecodeError as e:
 		print("ファイル"+args.web_outside_json+"はjson形式ではありません。設定ファイルを確認してください")
 		print("parserからのエラーメッセージ："+str(e))
-		sys.exit(-1)
+		sys.exit(1)
 	
-	# TODO: エラー処理
-	make_valid_web_outside_json(web_outside_list)
+	try:
+		make_valid_web_outside_json(web_outside_list)
+	except ValueError as e:
+		print("設定ファイル："+args.web_outside_json+"に以下の問題があります。")
+		print(e)
+		sys.exit(1)
 
 	api=GithubApi.GithubApi(args.github_user,args.github_token,args.github_owner,args.github_repos_name)
-	api.make_github_secrets("web_outside_json",web_outside_json.replace('"','\\"'))
-
-	api.exec_github_actions("exec_web_outside_test")
 	
+	try:
+		api.make_github_secrets("web_outside_json",web_outside_json.replace('"','\\"'))
+		api.exec_github_actions("exec_web_outside_test")
+	except ValueError as e:
+		print(e)
+		sys.exit(1)
+
+
 	test_result=""
 	with tempfile.TemporaryDirectory() as tmp:
-		api.download_github_artifacts(api.work_id,times=10,interval=5,output_dir=tmp)
+		try:
+			api.download_github_artifacts(api.work_id,times=10,interval=5,output_dir=tmp)
+		except ValueError as e:
+			print(e)
+			sys.exit(1)
 		test_result=read_zip(os.path.join(tmp,api.work_id)+".zip","result.txt")
 	error_list=test_result.split()
 	if len(error_list)==0:
+		print("All web outside tests passed")
 		sys.exit(0)
 	else:
 		for i in error_list:
 			print("test failed: "+web_outside_list[int(i)-1]["description"])
 			print("url: "+web_outside_list[int(i)-1]["url"])
-		sys.exit(1)
+			print("")
+		sys.exit(2)
 
 
 def read_zip(zip_file_name,file_name):

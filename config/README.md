@@ -10,7 +10,7 @@ GitHub ActionsからWebサイトにアクセスできるか確認するテスト
 
 | ファイル名              | 説明                                                                |
 |:------------------------|:--------------------------------------------------------------------|
-|web_outside_auth.sh      | GitHub Actionsにアクセスするために必要な情報を設定するファイルです。|
+|setting.sec.sh           | 他のテストと共通のファイルです。このテストでは、GitHub Actionsにアクセスするために必要な情報をこのファイルに書き込む必要があります。|
 |web_outside.json         | テストの対象となるURLと想定されるテスト結果を設定するファイルです。 | 
 
 
@@ -29,7 +29,7 @@ GitHubにPCのブラウザでログインし、右上の自分のアイコン→
 | Select scopes | repoにチェック                                 |
 
 
-2. `config/web_outside_auth.sh`に設定を記述
+2. `config/setting.sh`に設定を記述
 
 必要な情報は以下の4つ
 - Forkしたリポジトリの所有者→以下の例の`net-mgr`の部分に置き換える
@@ -37,16 +37,23 @@ GitHubにPCのブラウザでログインし、右上の自分のアイコン→
 - リポジトリにアクセス権を持つユーザのユーザ名→以下の例の`user_name`の部分を置き換える
 - 1.で生成したアクセストークン→以下の例の`ghp-tokentokentoken`の部分を置き換える
 
-`config/web_outside_auth.sh`の例を以下に示す。
+`config/setting.sh`の例を以下に示す。
 
 ```bash
-GITHUB_OWNER=net-mgr
-GITHUB_REPO_NAME=svrkeeper
-GITHUB_USERNAME=user_name
-GITHUB_TOKEN=ghp_tokentokentoken
+export GITHUB_OWNER=net-mgr
+export GITHUB_REPO_NAME=svrkeeper
+export GITHUB_USERNAME=user_name
+export GITHUB_TOKEN=ghp_tokentokentoken
 ```
 
-3. `config/web_outside.json`に設定を記述
+3. opensslで暗号化する
+
+下のコマンドのパスワードを任意のパスワードに書き換えて実行（このパスワードはテスト実行のたびに求められます）
+```bash
+openssl enc -e -aes256 -pbkdf2 -in config/setting.sh -out config/setting.sec.sh -k パスワード
+```
+
+4. `config/web_outside.json`に設定を記述
 
 エンコーディングは必ずUTF-8(BOMなし)にする。
 
