@@ -1,0 +1,23 @@
+name: exec_web_outside_test
+on:
+    workflow_dispatch:
+      inputs:
+        artifact_name:
+          description: 'artifact name'
+          required: true
+          default: 'test'
+jobs:
+    web_outside_test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository code
+              uses: actions/checkout@v2
+            - name: download web_outside.json from github secrets
+              run: echo "${{ secrets.web_outside_json }}" >web_outside.json
+            - name: exec test
+              run: bash scripts/web/web_outside.actions.sh
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: ${{  github.event.inputs.artifact_name  }}
+                  path: result.txt
+                  retention-days: 1
