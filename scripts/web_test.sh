@@ -43,12 +43,12 @@ fi
 TEST_OUTSIDE_RESULT=0
 TEST_INSIDE_RESULT=0
 
-# if [ $test_outside_exec -eq 1 ]; then
-#     python3 $DIR/web/outside_main.py $GITHUB_OWNER $GITHUB_REPO_NAME $GITHUB_USERNAME $GITHUB_TOKEN --web-outside-json $DIR/../config/web_outside.json
-#     TEST_OUTSIDE_RESULT=$?
-# else
-#     echo "No Web outside test executed."
-# fi
+if [ $test_outside_exec -eq 1 ]; then
+    python3 $DIR/web/outside_main.py $GITHUB_OWNER $GITHUB_REPO_NAME $GITHUB_USERNAME $GITHUB_TOKEN --web-outside-json $DIR/../config/web_outside.json
+    TEST_OUTSIDE_RESULT=$?
+else
+    echo "No Web outside test executed."
+fi
 
 if [ $test_inside_exec -eq 1 ]; then
     # TODO テストの実装：現在は以下のtrueコマンドをテストの代わりとしている
