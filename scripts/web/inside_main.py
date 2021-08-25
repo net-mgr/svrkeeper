@@ -1,12 +1,7 @@
 import sys
 import argparse
 import json
-import zipfile
-import tempfile
-import os
 import requests
-sys.path.append(os.path.join(os.path.dirname(__file__), '../lib'))
-import GithubApi
 
 def main():
     parser = argparse.ArgumentParser()
