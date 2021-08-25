@@ -85,7 +85,7 @@ class GithubApi:
 		
 		# workflow_idを用いて、dispatch_eventを発生させる(github actionsを実行)
 		data={}
-		data["ref"]="develop"
+		data["ref"]="main"
 		data["inputs"]={"artifact_name": self.work_id}
 		status_workflow_dispatch=requests.post(base_url+"/"+str(workflows_id)+"/dispatches", headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token),data=json.dumps(data))
 		
