@@ -17,13 +17,13 @@ test_inside_exec=1
 if [ -z $GITHUB_OWNER ]; then
     test_outside_exec=0
 fi
-if [ -z $GITHUB_OWNER ]; then
+if [ -z $GITHUB_REPO_NAME ]; then
     test_outside_exec=0
 fi
-if [ -z $GITHUB_OWNER ]; then
+if [ -z $GITHUB_USERNAME ]; then
     test_outside_exec=0
 fi
-if [ -z $GITHUB_OWNER ]; then
+if [ -z $GITHUB_TOKEN ]; then
     test_outside_exec=0
 fi
 if [ ! -e $DIR/../config/web_outside.json ]; then
