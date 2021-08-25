@@ -4,6 +4,7 @@ import json
 import zipfile
 import tempfile
 import os
+import requests
 sys.path.append(os.path.join(os.path.dirname(__file__), '../lib'))
 import GithubApi
 
@@ -35,54 +36,22 @@ def main():
         print(e)
         sys.exit(1)
 
-    #jsonのurlにアクセスする処理
+    # jsonのurlにアクセスする処理
+    error_flag = False
+    for web_inside in web_inside_list:
+        response = requests.get(web_inside["url"])
+        # errorがでたら出力
+        if response.status_code != web_inside["status"]:
+            print("test failed: "+web_inside["description"])
+            print("url: "+web_inside["url"])
+            print("")
+            error_flag = True
+
+    if error_flag == True:
+        sys.exit(2)
         
-    sys.exit(0)
-    
-    # api=GithubApi.GithubApi(args.github_user,args.github_token,args.github_owner,args.github_repos_name)
-    
-    # try:
-    #     api.make_github_secrets("web_inside_json",web_inside_json.replace('"','\\"'))
-    #     api.exec_github_actions("exec_web_inside_test")
-    # except ValueError as e:
-    #     print(e)
-    #     sys.exit(1)
-
-
-    # test_result=""
-    # with tempfile.TemporaryDirectory() as tmp:
-    #     try:
-    #         api.download_github_artifacts(api.work_id,times=10,interval=5,output_dir=tmp)
-    #     except ValueError as e:
-    #         print(e)
-    #         sys.exit(1)
-    #     test_result=read_zip(os.path.join(tmp,api.work_id)+".zip","result.txt")
-    # error_list=test_result.split()
-    # if len(error_list)==0:
-    #     print("All web inside tests passed")
-    #     sys.exit(0)
-    # else:
-    #     for i in error_list:
-    #         print("test failed: "+web_inside_list[int(i)-1]["description"])
-    #         print("url: "+web_inside_list[int(i)-1]["url"])
-    #         print("")
-    #     sys.exit(2)
-
-
-# def read_zip(zip_file_name,file_name):
-#     """
-#     read_zipはzip_file_name内に保存されたfile_nameを読み込み、ファイルの内容を文字列として返します。
-#     """
-#     content=""
-#     with tempfile.TemporaryDirectory() as tmp:
-#         with zipfile.ZipFile(zip_file_name) as existing_zip:
-#             existing_zip.extract(file_name,os.path.join(tmp,"result"))
-#         with open(os.path.join(tmp,"result/result.txt")) as f:
-#             content=f.read()
-#     return content
-        
-    
-#     pass
+    print("All web inside tests passed")
+    sys.exit(0)        
 
 def read_file(file_name):
     """
