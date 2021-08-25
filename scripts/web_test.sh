@@ -51,8 +51,6 @@ else
 fi
 
 if [ $test_inside_exec -eq 1 ]; then
-    # TODO テストの実装：現在は以下のtrueコマンドをテストの代わりとしている
-    # true
     python3 $DIR/web/inside_main.py --web-inside-json $DIR/../config/web_inside.json
     TEST_INSIDE_RESULT=$?
 fi
