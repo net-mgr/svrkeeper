@@ -11,7 +11,8 @@ GitHub ActionsからWebサイトにアクセスできるか確認するテスト
 | ファイル名              | 説明                                                                |
 |:------------------------|:--------------------------------------------------------------------|
 |setting.sec.sh           | 他のテストと共通のファイルです。このテストでは、GitHub Actionsにアクセスするために必要な情報をこのファイルに書き込む必要があります。|
-|web_outside.json         | テストの対象となるURLと想定されるテスト結果を設定するファイルです。 | 
+|web_outside.json         | 外側からのWebテストの対象となるURLと想定されるテスト結果を設定するファイルです。 | 
+|web_inside.json         | 内側からのWebテストの対象となるURLと想定されるテスト結果を設定するファイルです。 | 
 
 
 設定ファイルの書き方を説明します。
@@ -53,7 +54,7 @@ export GITHUB_TOKEN=ghp_tokentokentoken
 openssl enc -e -aes256 -pbkdf2 -in config/setting.sh -out config/setting.sec.sh -k パスワード
 ```
 
-4. `config/web_outside.json`に設定を記述
+4. `config/web_outside.json`および`config/web_inside.json`に設定を記述
 
 エンコーディングは必ずUTF-8(BOMなし)にする。
 
