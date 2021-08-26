@@ -26,8 +26,13 @@ fi
 if [ -z $GITHUB_TOKEN ]; then
     test_outside_exec=0
 fi
+# web_outside.jsonの確認
 if [ ! -e $DIR/../config/web_outside.json ]; then
     test_outside_exec=0
+fi
+# web_inside.jsonの確認
+if [ ! -e $DIR/../config/web_inside.json ]; then
+    test_inside_exec=0
 fi
 
 # 設定ファイルがあるテストの実行: 
@@ -46,8 +51,7 @@ else
 fi
 
 if [ $test_inside_exec -eq 1 ]; then
-    # TODO テストの実装：現在は以下のtrueコマンドをテストの代わりとしている
-    true
+    python3 $DIR/web/inside_main.py --web-inside-json $DIR/../config/web_inside.json
     TEST_INSIDE_RESULT=$?
 fi
 
