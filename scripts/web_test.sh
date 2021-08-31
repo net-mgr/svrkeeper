@@ -14,16 +14,16 @@ DIR=$(cd $(dirname $0); pwd)
 test_outside_exec=1
 test_inside_exec=1
 
-if [ -z $GITHUB_OWNER ]; then
+if [ -z $WEB_GITHUB_OWNER ]; then
     test_outside_exec=0
 fi
-if [ -z $GITHUB_REPO_NAME ]; then
+if [ -z $WEB_GITHUB_REPO_NAME ]; then
     test_outside_exec=0
 fi
-if [ -z $GITHUB_USERNAME ]; then
+if [ -z $WEB_GITHUB_USERNAME ]; then
     test_outside_exec=0
 fi
-if [ -z $GITHUB_TOKEN ]; then
+if [ -z $WEB_GITHUB_TOKEN ]; then
     test_outside_exec=0
 fi
 # web_outside.jsonの確認
@@ -44,7 +44,7 @@ TEST_OUTSIDE_RESULT=0
 TEST_INSIDE_RESULT=0
 
 if [ $test_outside_exec -eq 1 ]; then
-    python3 $DIR/web/outside_main.py $GITHUB_OWNER $GITHUB_REPO_NAME $GITHUB_USERNAME $GITHUB_TOKEN --web-outside-json $DIR/../config/web_outside.json
+    python3 $DIR/web/outside_main.py $WEB_GITHUB_OWNER $WEB_GITHUB_REPO_NAME $WEB_GITHUB_USERNAME $WEB_GITHUB_TOKEN --web-outside-json $DIR/../config/web_outside.json
     TEST_OUTSIDE_RESULT=$?
 else
     echo "No Web outside test executed."

@@ -50,9 +50,9 @@ class GithubApi:
 		# public keyの取得 
 		public_key_request=requests.get(base_url+"/public-key",headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token))
 		if public_key_request.status_code==404:
-			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのGITHUB_OWNER、GITHUB_REPO_NAMEが間違っていないか確認してください。メッセージ："+public_key_request.text)
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのWEB_GITHUB_OWNER、WEB_GITHUB_REPO_NAMEが間違っていないか確認してください。メッセージ："+public_key_request.text)
 		if public_key_request.status_code==403:
-			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのGITHUB_USERNAMEやGITHUB_TOKENが間違っていない確認してください。メッセージ："+public_key_request.text)
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのWEB_GITHUB_USERNAMEやWEB_GITHUB_TOKENが間違っていない確認してください。メッセージ："+public_key_request.text)
 		if public_key_request.status_code!=200:
 			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。status:"+public_key_request.status_code+"、メッセージ："+public_key_request.text)
 		public_key=public_key_request.json()
