@@ -26,6 +26,9 @@ fi
 if [ -z $WEB_GITHUB_TOKEN ]; then
     test_outside_exec=0
 fi
+if [ -z $WEB_GITHUB_BRANCH ]; then
+    WEB_GITHUB_BRANCH="main"
+fi
 # web_outside.jsonの確認
 if [ ! -e $DIR/../config/web_outside.json ]; then
     test_outside_exec=0
@@ -44,7 +47,7 @@ TEST_OUTSIDE_RESULT=0
 TEST_INSIDE_RESULT=0
 
 if [ $test_outside_exec -eq 1 ]; then
-    python3 $DIR/web/outside_main.py $WEB_GITHUB_OWNER $WEB_GITHUB_REPO_NAME $WEB_GITHUB_USERNAME $WEB_GITHUB_TOKEN --web-outside-json $DIR/../config/web_outside.json
+    python3 $DIR/web/outside_main.py $WEB_GITHUB_OWNER $WEB_GITHUB_REPO_NAME $WEB_GITHUB_USERNAME $WEB_GITHUB_TOKEN --github-branch $WEB_GITHUB_BRANCH --web-outside-json $DIR/../config/web_outside.json
     TEST_OUTSIDE_RESULT=$?
 else
     echo "No Web outside test executed."

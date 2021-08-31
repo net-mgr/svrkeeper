@@ -33,9 +33,10 @@ GitHubにPCのブラウザでログインし、右上の自分のアイコン→
 
 2. `config/setting.sh`に設定を記述
 
-必要な情報は以下の4つ
+必要な情報は以下の5つ
 - Forkしたリポジトリの所有者→以下の例の`net-mgr`の部分に置き換える
 - リポジトリ名(変更していなければ、`svrkeeper`)→以下の例の`svrkeeper`の部分を置き換える
+- ブランチ名（変更していなければ、`main`）→以下の例の`main`の部分を置き換える
 - リポジトリにアクセス権を持つユーザのユーザ名→以下の例の`user_name`の部分を置き換える
 - 1.で生成したアクセストークン→以下の例の`ghp-tokentokentoken`の部分を置き換える
 
@@ -44,6 +45,7 @@ GitHubにPCのブラウザでログインし、右上の自分のアイコン→
 ```bash
 export WEB_GITHUB_OWNER=net-mgr
 export WEB_GITHUB_REPO_NAME=svrkeeper
+export WEB_GITHUB_BRANCH=main
 export WEB_GITHUB_USERNAME=user_name
 export WEB_GITHUB_TOKEN=ghp_tokentokentoken
 ```
