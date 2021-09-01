@@ -43,7 +43,7 @@ TEST_OUTSIDE_RESULT=0
 TEST_INSIDE_RESULT=0
 
 if [ $test_outside_exec -eq 1 ]; then
-    python3 $DIR/dns/outside_main.py $GITHUB_OWNER $GITHUB_REPO_NAME $GITHUB_USERNAME $GITHUB_TOKEN --dns-outside-json $DIR/../config/dns_outside.json
+    python3 $DIR/dns/outside_main.py $GITHUB_OWNER $GITHUB_REPO_NAME $GITHUB_USERNAME $GITHUB_TOKEN --github-branch $GITHUB_BRANCH --dns-outside-json $DIR/../config/dns_outside.json
     TEST_OUTSIDE_RESULT=$?
 else
     echo "No DNS outside test executed."
