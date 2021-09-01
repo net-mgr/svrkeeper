@@ -40,9 +40,9 @@ fi
 setting_file_sec=${SCRIPTS_DIR}/config/setting.sec.sh
 setting_file=${SCRIPTS_DIR}/config/setting.sh
 
-# if setting_file does not exist,
-# create it by decrypting setting.sec.sh
-if [ ! -e $setting_file ]; then
+# if setting_file_sec exist,
+# include setting
+if [ -e $setting_file_sec ]; then
 	read -sp "# Input setting file password: " setting_pass
 	tty -s && echo
 	openssl enc -d -aes256 -pbkdf2 -in $setting_file_sec -out $setting_file -k $setting_pass
@@ -51,11 +51,12 @@ if [ ! -e $setting_file ]; then
 		echo "# Decryption of 'setting.sec.sh' was failed."
 		exit 1
 	fi
+	# include setting.sh
+	. $setting_file
+	rm $setting_file
 fi
 
-# include setting.sh
-. $setting_file
-rm $setting_file
+
 
 #####################################################################################
 # テストの実行 (並列) 。バックグラウンドで実行し、waitで待つ
