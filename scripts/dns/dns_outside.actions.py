@@ -19,7 +19,7 @@ def dnslookup(hosts, result):
 if __name__ == '__main__':
     # read json
     with open('dns_outside.json', 'r') as json_hosts:
-        hosts = json.load(json_items)
+        hosts = json.load(json_hosts)
     result = []
     dnslookup(hosts, result)
     with open('result.txt', 'w') as result_file:
