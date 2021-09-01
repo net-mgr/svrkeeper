@@ -27,7 +27,7 @@ $ pip3 install -r requirements.txt
 4. `config/`以下に設定ファイルを設置
 
 設定ファイルの例を`config_sample/`に配置しています。
-設定ファイルの説明は[config/README.md](config/README.md)に記述しています。
+設定ファイルの説明は[doc/config/README.md](doc/config/README.md)に記述しています。
 
 ## テストの実行方法
 
@@ -102,17 +102,7 @@ $ ./run.sh access
 
 | ディレクトリ名 | 内容|
 |:-----------|:----|
-| config |テストに必要なパラメータのファイルを保存。また、暗号化した認証情報は`config/setting.sec.sh`に暗号化して保存。（詳しくは[config/README.md](config/README.md)|
+| config |テストに必要なパラメータのファイルを保存。また、暗号化した認証情報は`config/setting.sec.sh`に暗号化して保存。（詳しくは[doc/config/README.md](doc/config/README.md)|
 | config_sample | configに設置するファイルの例を保存。テストには使わない。 |
 | results | テスト結果を保存 |
 | scripts | テストを実行するスクリプトを保存。すべて`run.sh`からのみ呼び出す|
-
-## TODO
-- `scripts/web_test.sh`の内部からのアクセスのテストの実装
-- その他のテストの実装（現在は`exit 0`のみになっている)
-    - `scripts/access_point_test.sh`
-    - `scripts/backup_test.sh`
-    - `scripts/dns_test.sh`
-    - `scripts/edit_file_test.sh`
-    - `scripts/login_test.sh`
-    - `scripts/mail_test.sh`

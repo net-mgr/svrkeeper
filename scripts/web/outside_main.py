@@ -13,6 +13,7 @@ def main():
 	parser.add_argument("github_repos_name",help="https://api.github.com/repos/{github_owner}/{github_repos_name}/")
 	parser.add_argument("github_user", help="リポジトリへのアクセス権があるユーザのユーザ名")
 	parser.add_argument("github_token", help="github_userが作成したトークン（必要なscope：repo）")
+	parser.add_argument("--github-branch", help="GitHub Actionsを実行するbranch（開発中以外はmainを指定)", default="main")
 	parser.add_argument("--web-outside-json", help="../config/web_outside.json以外に設定ファイルを置く場合はここにスクリプトからの相対パスを指定",default="../config/web_outside.json")
 	args = parser.parse_args()
 
@@ -43,7 +44,7 @@ def main():
 	
 	try:
 		api.make_github_secrets("web_outside_json",web_outside_json.replace('"','\\"'))
-		api.exec_github_actions("exec_web_outside_test")
+		api.exec_github_actions("exec_web_outside_test",branch=args.github_branch)
 	except ValueError as e:
 		print(e)
 		sys.exit(1)

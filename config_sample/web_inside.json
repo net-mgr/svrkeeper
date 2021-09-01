@@ -1,0 +1,17 @@
+[
+	{
+		"description": "テスト１: https://example.comに正常にアクセスできるか確認（ステータスコード200が正常）",
+		"url": "https://example.com",
+		"status": 200
+	},
+	{
+		"description": "テスト2: Basic認証がかかっているかテストする例",
+		"url": "https://example.com/401",
+		"status": 401
+	},
+	{
+		"description": "テスト3: アクセス拒否されないか確認する例",
+		"url": "https://example.com/200",
+		"status": 200
+	}
+]

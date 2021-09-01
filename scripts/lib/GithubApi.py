@@ -50,9 +50,9 @@ class GithubApi:
 		# public keyの取得 
 		public_key_request=requests.get(base_url+"/public-key",headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token))
 		if public_key_request.status_code==404:
-			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのGITHUB_OWNER、GITHUB_REPO_NAMEが間違っていないか確認してください。メッセージ："+public_key_request.text)
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのWEB_GITHUB_OWNER、WEB_GITHUB_REPO_NAMEが間違っていないか確認してください。メッセージ："+public_key_request.text)
 		if public_key_request.status_code==403:
-			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのGITHUB_USERNAMEやGITHUB_TOKENが間違っていない確認してください。メッセージ："+public_key_request.text)
+			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。設定ファイルのWEB_GITHUB_USERNAMEやWEB_GITHUB_TOKENが間違っていない確認してください。メッセージ："+public_key_request.text)
 		if public_key_request.status_code!=200:
 			raise ValueError("GitHub APIを用いてsecretsのpubic keyが取得できません。status:"+public_key_request.status_code+"、メッセージ："+public_key_request.text)
 		public_key=public_key_request.json()
@@ -65,9 +65,10 @@ class GithubApi:
 		if secrets_put.status_code!=201 and secrets_put.status_code!=204:
 			raise ValueError("GitHub APIを用いてSecretsを登録することができません。メッセージ："+secrets_put.text)
 
-	def exec_github_actions(self, workflows_name):
+	def exec_github_actions(self, workflows_name, branch="main"):
 		"""
 		exec_github_actionsは、指定されたgithub actionsを実行します。
+		実行するbranchはbranchに設定されたブランチです。
 
 		"""
 		base_url="https://api.github.com/repos/"+self.repos_owner+"/"+self.repos_name+"/actions/workflows"		
@@ -85,7 +86,7 @@ class GithubApi:
 		
 		# workflow_idを用いて、dispatch_eventを発生させる(github actionsを実行)
 		data={}
-		data["ref"]="main"
+		data["ref"]=branch
 		data["inputs"]={"artifact_name": self.work_id}
 		status_workflow_dispatch=requests.post(base_url+"/"+str(workflows_id)+"/dispatches", headers=headers, auth=HTTPBasicAuth(self.github_user, self.github_token),data=json.dumps(data))
 		
