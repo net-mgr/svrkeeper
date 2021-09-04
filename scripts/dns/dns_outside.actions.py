@@ -12,7 +12,7 @@ def dnslookup(hosts, result):
     for host in hosts:
         flag = ('true' == host['flag'])
         addr = socket.gethostbyname(host['domain'])
-        if addr == host['addr'] ^ flag:
+        if (addr == host['addr']) ^ flag:
             result.append(i)
         i += 1
 
