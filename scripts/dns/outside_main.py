@@ -98,12 +98,14 @@ def make_valid_dns_outside_json(dns_outside_list):
     """
     make_valid_dns_outside_jsonは、ディクショナリのリストを引数として受け取る。
     各ディクショナリにdescription, domain, addrのキーがあるか確認し、
-    urlとstatusがない場合は、ValueErrorを送出する
+    flag，domain，およびaddrがない場合は、ValueErrorを送出する
     descriptionがない場合は空白のdescriptionを追加する
     """
     for dns_outside in dns_outside_list:
         if "description" not in dns_outside:
             dns_outside["description"]=""
+        if "flag" not in dns_outside:
+            raise ValueError("リストのすべての要素に'flag'が必要です。'flag'が無い要素があります。テスト対象のURLを記述するか、その要素を削除してください")
         if "domain" not in dns_outside:
             raise ValueError("リストのすべての要素に'domain'が必要です。'domain'が無い要素があります。テスト対象のURLを記述するか、その要素を削除してください")
         if "addr" not in dns_outside:

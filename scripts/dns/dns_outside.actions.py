@@ -10,9 +10,12 @@ import socket
 def dnslookup(hosts, result):
     i = 1
     for host in hosts:
-        flag = ('true' == host['flag'])
-        addr = socket.gethostbyname(host['domain'])
-        if (addr == host['addr']) ^ flag:
+        try:
+            flag = ('true' == host['flag'])
+            addr = socket.gethostbyname(host['domain'])
+            if (addr == host['addr']) ^ flag:
+                result.append(i)
+        except:
             result.append(i)
         i += 1
 
