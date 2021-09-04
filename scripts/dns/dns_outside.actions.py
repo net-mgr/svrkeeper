@@ -20,7 +20,7 @@ def dnslookup(host, result, i):
 def reverse_dnslookup(host, result, i):
     try:
         flag = ('true' == host['flag'])
-        host_name = socket.gethostbyaddr(host['addr'])
+        host_name = socket.gethostbyaddr(host['addr'])[0]
         if len(host['domain']) != 0:
             if (host_name == host['domain']) ^ flag:
                 result.append(i)
