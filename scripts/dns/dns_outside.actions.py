@@ -7,17 +7,25 @@
 import json
 import socket
 
-def dnslookup(hosts, result):
-    i = 1
-    for host in hosts:
-        try:
-            flag = ('true' == host['flag'])
-            addr = socket.gethostbyname(host['domain'])
+def dnslookup(host, result, i):
+    try:
+        flag = ('true' == host['flag'])
+        addr = socket.gethostbyname(host['domain'])
+        if len(host['addr']) != 0:
             if (addr == host['addr']) ^ flag:
                 result.append(i)
-        except:
-            result.append(i)
-        i += 1
+    except:
+        result.append(i)
+
+def reverse_dnslookup(host, result, i):
+    try:
+        flag = ('true' == host['flag'])
+        host_name = socket.gethostbyaddr(host['addr'])
+        if len(host['domain']) != 0:
+            if (host_name == host['domain']) ^ flag:
+                result.append(i)
+    except:
+        result.append(i)
 
 
 if __name__ == '__main__':
@@ -25,7 +33,14 @@ if __name__ == '__main__':
     with open('dns_outside.json', 'r') as json_hosts:
         hosts = json.load(json_hosts)
     result = []
-    dnslookup(hosts, result)
+    i = 1
+    for host in hosts:
+        if host['method'] == 'default':
+            dnslookup(host, result, i)
+        else:
+            reverse_dnslookup(host, result, i)
+        i += 1
+            
     with open('result.txt', 'w') as result_file:
         for i in result:
             result_file.write(str(i)+'\n')

@@ -65,7 +65,10 @@ def main():
     else:
         for i in error_list:
             print("test failed: "+dns_outside_list[int(i)-1]["description"])
+            print("method: "+dns_outside_list[int(i)-1]["method"])
+            print("flag: "+dns_outside_list[int(i)-1]["flag"])
             print("domain: "+dns_outside_list[int(i)-1]["domain"])
+            print("addr: "+dns_outside_list[int(i)-1]["addr"])
             print("")
         sys.exit(2)
 
@@ -97,19 +100,27 @@ def read_file(file_name):
 def make_valid_dns_outside_json(dns_outside_list):
     """
     make_valid_dns_outside_jsonは、ディクショナリのリストを引数として受け取る。
-    各ディクショナリにdescription, domain, addrのキーがあるか確認し、
-    flag，domain，およびaddrがない場合は、ValueErrorを送出する
+    各ディクショナリにdescription, method, flag, domain, addrのキーがあるか確認し、
+    method，flag，domain，およびaddrがない場合は、ValueErrorを送出する
     descriptionがない場合は空白のdescriptionを追加する
     """
     for dns_outside in dns_outside_list:
         if "description" not in dns_outside:
             dns_outside["description"]=""
+        if "method" not in dns_outside:
+            raise ValueError("リストのすべての要素に'method'が必要です。'method'が無い要素があります。テスト対象のmethodを記述するか、その要素を削除してください")            
         if "flag" not in dns_outside:
-            raise ValueError("リストのすべての要素に'flag'が必要です。'flag'が無い要素があります。テスト対象のURLを記述するか、その要素を削除してください")
-        if "domain" not in dns_outside:
-            raise ValueError("リストのすべての要素に'domain'が必要です。'domain'が無い要素があります。テスト対象のURLを記述するか、その要素を削除してください")
-        if "addr" not in dns_outside:
-            raise ValueError("リストのすべての要素に'addr'が必要です。'addr'が無い要素があります。'url'にアクセスしたときに想定されるステータスコードを要素に必ず含んでください。")
+            raise ValueError("リストのすべての要素に'flag'が必要です。'flag'が無い要素があります。テスト対象のflagを記述するか、その要素を削除してください")
+        if  dns_outside["method"] == "default":
+            if "domain" not in dns_outside:
+                raise ValueError("正引きのリストのすべての要素に'domain'が必要です。'domain'が無い要素があります。テスト対象のドメインを記述するか、その要素を削除してください")
+            if "addr" not in dns_outside:
+                dns_outside["addr"]=""
+        else:
+            if "domain" not in dns_outside:
+                dns_outside["domain"]=""
+            if "addr" not in dns_outside:
+                raise ValueError("逆引きのリストのすべての要素に'addr'が必要です。'addr'が無い要素があります。テスト対象のIPアドレスを記述するか、その要素を削除してください")
 
 if __name__ == "__main__":
     main()
