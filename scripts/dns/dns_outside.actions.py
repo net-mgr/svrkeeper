@@ -37,11 +37,11 @@ if __name__ == '__main__':
     for host in hosts:
         if host['method'] == 'default':
             if "addr" not in host:
-                dns_outside["addr"]=""
+                host["addr"]=""
                 dnslookup(host, result, i)
         else:
             if "domain" not in host:
-                dns_outside["domain"]=""
+                host["domain"]=""
                 reverse_dnslookup(host, result, i)
         i += 1
             
