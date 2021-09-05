@@ -4,6 +4,7 @@ import json
 import zipfile
 import tempfile
 import os
+import socket
 
 def main():
     parser = argparse.ArgumentParser()
@@ -38,11 +39,11 @@ def main():
         if host['method'] == 'default':
             if "addr" not in host:
                 host["addr"]=""
-                error_flag |= dnslookup(host)
+            error_flag |= dnslookup(host)
         else:
             if "domain" not in host:
                 host["domain"]=""
-                error_flag |= reverse_dnslookup(host)
+            error_flag |= reverse_dnslookup(host)
                 
     if error_flag == True:
         sys.exit(2)
