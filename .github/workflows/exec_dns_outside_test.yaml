@@ -1,0 +1,23 @@
+name: exec_dns_outside_test
+on:
+    workflow_dispatch:
+      inputs:
+        artifact_name:
+          description: 'artifact name'
+          required: true
+          default: 'test'
+jobs:
+    dns_outside_test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository code
+              uses: actions/checkout@v2
+            - name: download dns_outside.json from github secrets
+              run: echo "${{ secrets.dns_outside_json }}" >dns_outside.json
+            - name: exec test
+              run: python3 scripts/dns/dns_outside.actions.py
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: ${{  github.event.inputs.artifact_name  }}
+                  path: result.txt
+                  retention-days: 1
