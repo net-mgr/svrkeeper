@@ -1,0 +1,39 @@
+[
+	{
+	    "description": "テスト1:example.comの名前が解決できることを確認(正引き)",
+	    "method": "default",
+	    "flag": "true",
+	    "domain": "example.com",
+	    "addr": ""
+	},{
+	    "description": "テスト2: example.comの名前と指定したIPが一致することを確認(正引き)",
+	    "method": "default",
+	    "flag": "true",
+	    "domain": "example.com",
+	    "addr": "93.184.216.34"
+	},{
+	    "description": "テスト3: www.example.comの名前と指定したIPが一致しないことを確認(正引き)",
+	    "method": "default",
+	    "flag": "false",
+	    "domain": "example.com",
+	    "addr": "192.168.1.1"
+	},{
+	    "description": "テスト4:IPから名前解決できることを確認(逆引き)",
+	    "method": "reverse",
+	    "flag": "true",
+	    "domain": "",
+	    "addr": "153.126.193.74"
+	},{
+	    "description": "テスト5: IPから解決した名前が指定したドメインと一致することを確認(逆引き)",
+	    "method": "reverse",
+	    "flag": "true",
+	    "domain": "ik1-332-26320.vs.sakura.ne.jp",
+	    "addr": "153.126.193.74"
+	},{
+	    "description": "テスト6: IPから解決した名前が指定したドメインと一致しないことを確認(逆引き)",
+	    "method": "reverse",
+	    "flag": "false",
+	    "domain": "example.com",
+	    "addr": "153.126.193.74"
+	}
+]

@@ -33,16 +33,22 @@ def main():
         print(e)
         sys.exit(1)
 
+    error_flag = False
     for host in dns_inside_list:
         if host['method'] == 'default':
             if "addr" not in host:
                 host["addr"]=""
-                dnslookup(host)
+                error_flag |= dnslookup(host)
         else:
             if "domain" not in host:
                 host["domain"]=""
-                reverse_dnslookup(host)
-
+                error_flag |= reverse_dnslookup(host)
+                
+    if error_flag == True:
+        sys.exit(2)
+        
+    print("All web inside tests passed")
+    sys.exit(0)        
         
 def error_print(host):
     print("test failed: "+host["description"])
@@ -59,8 +65,11 @@ def dnslookup(host):
         if len(host['addr']) != 0:
             if (addr == host['addr']) ^ flag:
                 error_print(host)
+                return True
+        return False
     except:
         error_print(host)
+        return True
 
 def reverse_dnslookup(host):
     try:
@@ -69,8 +78,11 @@ def reverse_dnslookup(host):
         if len(host['domain']) != 0:
             if (host_name == host['domain']) ^ flag:
                 error_print(host)
+                return True
+        return False
     except:
         error_print(host)
+        return True
 
 def read_file(file_name):
     """
