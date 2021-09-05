@@ -59,16 +59,16 @@ fi
 if [ $TEST_OUTSIDE_RESULT -eq 2 ];then
     TEST_RESULT=1
 fi
-# if [ $TEST_INSIDE_RESULT -eq 2 ];then
-#     TEST_RESULT=1
-# fi
+if [ $TEST_INSIDE_RESULT -eq 2 ];then
+    TEST_RESULT=1
+fi
 
 if [ $TEST_OUTSIDE_RESULT -eq 1 ];then
     TEST_RESULT=-1
 fi
-# if [ $TEST_INSIDE_RESULT -eq 1 ];then
-#     TEST_RESULT=-1
-# fi
+if [ $TEST_INSIDE_RESULT -eq 1 ];then
+    TEST_RESULT=-1
+fi
 
 exit $TEST_RESULT
 
