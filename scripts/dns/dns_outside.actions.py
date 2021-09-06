@@ -38,11 +38,11 @@ if __name__ == '__main__':
         if host['method'] == 'default':
             if "addr" not in host:
                 host["addr"]=""
-                dnslookup(host, result, i)
+            dnslookup(host, result, i)
         else:
             if "domain" not in host:
                 host["domain"]=""
-                reverse_dnslookup(host, result, i)
+            reverse_dnslookup(host, result, i)
         i += 1
             
     with open('result.txt', 'w') as result_file:
