@@ -28,7 +28,7 @@ ssh を用いてサーバにログインできるかのテストです．
 | HOST\<n\>    | 必須  | 接続先のホスト名．                                |
 | HOST\<n\>_SSH_KEY | 必須 | ホストに接続するために必要な秘密鍵     |
 | TEST_MSG\<n\>  | 必須 | テストを実行した際に表示されるメッセージ．どのようなテストか記述する．     |
-| EXPECT\<n\>    | 必須 | 接続の成否がどちらであればテストが成功したかを示す．（成功をテストしたい場合は”Login succeed.”，失敗をテストしたい場合は"Login failed."を記述する．） |
+| EXPECTED_RESULT\<n\>    | 必須 | 接続の成否がどちらであればテストが成功したかを示す．（成功をテストしたい場合は0，失敗をテストしたい場合は1を記述する．） |
 | CMD\<n\>        | 必須 | ssh で接続した先で実行するコマンド |
 
 設定例を以下に示す。
@@ -36,14 +36,14 @@ ssh を用いてサーバにログインできるかのテストです．
 ```
 NUM_OF_HOSTS=2
 HOST1=host1_name
-HOST1_SSH_KEY=host1/ssh_key_pass
+HOST1_SSH_KEY=host1/ssh_key_path
 TEST_MSG1="テスト1:host1_nameへのログインが成功することを確認"
-EXPECT1="Login succeed."
-CMD1=exec_cmd
+EXPECTED_RESULT1=0
+CMD1=exit
 HOST2=host2_name
-HOST2_SSH_KEY=host2/ssh_key_pass
+HOST2_SSH_KEY=host2/ssh_key_path
 TEST_MSG2="テスト2:host2_nameへのログインが失敗することを確認"
-EXPECT2="Login failed."
-CMD2=exec_cmd
+EXPECTED_RESULT2=1
+CMD2=exit
 
 ```
