@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BACKUP_USER=(user1 user2 ...)
+BACKUP_HOST=(host1 host2 ...)
+BACKUP_SRC_DIR=(/src_dir1 /src_dir2 ...)
+BACKUP_DEST_DIR=(/dest_dir1 /dest_dir2 ...)
+
+SSH_KEY=/thisissample/.ssh/ssh_key_sample
+BACKUP_COMMAND=/usr/bin/backup_command_sample
+BACKUP_OPTIONS="--option_sample"
+
+LOGFILE=/backup/log_sample/backup.log
