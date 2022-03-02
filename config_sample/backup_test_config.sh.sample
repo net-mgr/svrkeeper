@@ -1,0 +1,8 @@
+#!/bin/bash
+
+BACKUP_USER=user_name
+BACKUP_HOST=host.sample.com
+BACKUP_SSH_KEY=/ssh_key_pash/.ssh/ssh_key_sample
+
+BACKUP_SH=/bin/bash
+BACKUP_SCRIPT="/backup_sh_path/backup.sh --dry-run"
